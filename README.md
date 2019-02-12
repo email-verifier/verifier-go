@@ -4,7 +4,9 @@ A Go Library to verify invalid domains, disposable, non-existent emails. [know m
 # Installation
 Install by running the below command
 
-```go get github.com/email-verifier/verifier-go```
+```bash
+go get github.com/email-verifier/verifier-go
+```
 
 # Usage
 Below is the example of how to use the library
