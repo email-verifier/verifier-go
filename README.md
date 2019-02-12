@@ -10,12 +10,14 @@ Below is the example of how to use the library
 package main
 
 import (
-   "fmt"
-   "github.com/email-verifier/verifier-go"
+	"fmt"
+
+	emailVerifier "github.com/email-verifier/verifier-go"
 )
 
 func main() {
-   response := emailVerifier.verify("meet@gmail.com", "newasd")
-   fmt.Println(response)
+	response := emailVerifier.Verify("meet@gmail.com", "newasd")
+	fmt.Println(response)
 }
+
 ```
