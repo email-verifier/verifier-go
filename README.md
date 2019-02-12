@@ -1,6 +1,8 @@
 # Official Go Library for verifier.meetchopra.com
+A Go Library to verify invalid domains, disposable, non-existent emails. [know more](https://verifier.meetchopra.com)
 
 # Installation
+Install by running the below command
 ```go get github.com/email-verifier/verifier-go```
 
 # Usage
@@ -21,3 +23,6 @@ func main() {
 }
 
 ```
+`emailVerifier.Verify` will return a boolean in response.
+`true` if email exsits
+`false` if email does not exsits
