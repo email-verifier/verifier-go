@@ -1,7 +1,6 @@
 package emailVerifier
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"encoding/json"
