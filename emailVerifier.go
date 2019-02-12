@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func verify(email, access_token string) (string, string) {
+func verify(email, access_token string) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", "https://verifier.meetchopra.com/verify/", email, "?token=", access_token, nil)
 	if err != nil {
@@ -22,5 +22,5 @@ func verify(email, access_token string) (string, string) {
 		log.Fatal(err)
 	}
 	fmt.Printf("%s\n", bodyText)
-  return bodyText
+	  return bodyText
 }
