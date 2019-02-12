@@ -10,7 +10,7 @@ type Verfier_struct struct {
   Status bool `json:"status"`
 }
 
-func verify(email, access_token string) bool {
+func Verify(email, access_token string) bool {
 	var url = "https://verifier.meetchopra.com/verify/"+ email+ "?token="+ access_token
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url , nil)
