@@ -18,7 +18,7 @@ import (
 )
 
 func main() {
-	response := emailVerifier.Verify("meet@gmail.com", "newasd")
+	response := emailVerifier.Verify("meet@gmail.com", "ACCESS_TOKEN")
 	fmt.Println(response)
 }
 
