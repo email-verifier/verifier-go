@@ -2,14 +2,19 @@ package emailVerifier
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"encoding/json"
 )
 
-func verify(email, access_token string) {
+type Verfier_struct struct {
+  Status bool `json:"status"`
+}
+
+func verify(email, access_token string) bool {
+	var url = "https://verifier.meetchopra.com/verify/"+ email+ "?token="+ access_token
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", "https://verifier.meetchopra.com/verify/", email, "?token=", access_token, nil)
+	req, err := http.NewRequest("GET", url , nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -17,10 +22,11 @@ func verify(email, access_token string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	bodyText, err := ioutil.ReadAll(resp.Body)
+	decoder := json.NewDecoder(resp.Body)
+	var data Verfier_struct
+	err = decoder.Decode(&data)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%s\n", bodyText)
-	  return bodyText
+	return data.Status
 }
