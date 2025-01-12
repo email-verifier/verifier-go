@@ -1,31 +1,69 @@
 package emailVerifier
 
 import (
-	"log"
-	"net/http"
 	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/mail"
+	"strings"
+	"time"
 )
 
-type Verfier_struct struct {
-  Status bool `json:"status"`
+type VerifierStruct struct {
+	Status bool `json:"status"`
 }
 
-func Verify(email, access_token string) bool {
-	var url = "https://verifier.meetchopra.com/verify/"+ email+ "?token="+ access_token
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", url , nil)
-	if err != nil {
-		log.Fatal(err)
+// Verify checks if an email address is valid
+func Verify(email, accessToken string) bool {
+	// Input validation
+	if !isValidInput(email, accessToken) {
+		return false
 	}
+
+	// Create HTTP client with timeout
+	client := &http.Client{
+		Timeout: 10 * time.Second,
+	}
+
+	url := fmt.Sprintf("https://verifyright.co/verify/%s?token=%s", 
+		strings.TrimSpace(email), 
+		strings.TrimSpace(accessToken))
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return false
+	}
+
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		return false
 	}
-	decoder := json.NewDecoder(resp.Body)
-	var data Verfier_struct
-	err = decoder.Decode(&data)
-	if err != nil {
-		log.Fatal(err)
+	defer resp.Body.Close()
+
+	// Check for non-200 status codes
+	if resp.StatusCode != http.StatusOK {
+		return false
 	}
+
+	var data VerifierStruct
+	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
+		return false
+	}
+
 	return data.Status
+}
+
+// isValidInput validates the email and access token
+func isValidInput(email, accessToken string) bool {
+	if email == "" || accessToken == "" {
+		return false
+	}
+
+	// Basic email format validation
+	_, err := mail.ParseAddress(email)
+	if err != nil {
+		return false
+	}
+
+	return true
 }
